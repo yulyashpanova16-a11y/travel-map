@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Travel Map</title>
+
+  <!-- Leaflet styles -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+    }
+
+    img {
+      display: block;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <!-- Leaflet script -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // 1. Создаём карту
+    const map = L.map('map').setView([48.8566, 2.3522], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // 2. Места, где ты была
+    const places = [
+      {
+        city: "Париж",
+        coords: [48.8566, 2.3522],
+        photo: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+        note: "Много ходила и много чувствовала."
+      },
+      {
+        city: "Рим",
+        coords: [41.9028, 12.4964],
+        photo: "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=800&q=80",
+        note: "Ела пасту и никуда не спешила."
+      }
+    ];
+
+    places.forEach(place => {
+      L.marker(place.coords)
+        .addTo(map)
+        .bindPopup(`
+          <h3>${place.city}</h3>
+          <img src="${place.photo}" style="width:100%; border-radius:8px;" />
+          <p>${place.note}</p>
+        `);
+    });
+
+    // 3. Маршрут путешествия
+    const route = [
+      [48.8566, 2.3522], // Париж
+      [41.9028, 12.4964], // Рим
+      [52.52, 13.405]     // Берлин
+    ];
+
+    L.polyline(route, {
+      color: 'purple',
+      weight: 3,
+      opacity: 0.7
+    }).addTo(map);
+  </script>
+
+</body>
+</html>
